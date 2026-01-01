@@ -1,0 +1,73 @@
+body {
+    background: linear-gradient(135deg, #6a00ff, #ff4ecd);
+    font-family: Inter, sans-serif;
+}
+
+.rmc-shop {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.product-card {
+    width: 260px;
+    padding: 24px;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #2b0038, #5b006b);
+    color: #fff;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    transition: .4s;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+}
+
+.buy-init {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(145deg,#ff4ecd,#ff008c);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.9);
+    border-radius: 22px;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm {
+    text-align: center;
+}
+
+.mini-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.mini-check input {
+    display: none;
+}
+
+.mini-check span {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    border: 2px solid #ff6ec7;
+}
+
+.mini-check input:checked + span {
+    background: #ff6ec7;
+}
