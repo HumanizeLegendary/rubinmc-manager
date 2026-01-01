@@ -2,23 +2,26 @@
 if (!defined('ABSPATH')) exit;
 
 class RubinMC_Shop_Shortcode {
-
-    public function __construct() {
-        add_shortcode('rmc_shop', [$this, 'render']);
+    public static function init() {
+        add_shortcode('rmc_shop', [__CLASS__, 'render_shop']);
+        add_action('wp_enqueue_scripts', [__CLASS__, 'enqueue_assets']);
     }
 
-    public function render() {
-        $products = RubinMC_DB_Manager::get_products();
-        if (!$products) {
-            return '<div class="rmc-empty">Товары отсутствуют</div>';
-        }
+    public static function enqueue_assets() {
+        wp_enqueue_style('rmc-shop-css', RMC_URL . 'assets/shop.css');
+        wp_enqueue_script('rmc-shop-js', RMC_URL . 'assets/shop.js', ['jquery'], null, true);
+        wp_localize_script('rmc-shop-js', 'rmc_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
+    }
 
-        ob_start();
-        echo '<div id="rmc-shop" class="rmc-shop">';
-        foreach ($products as $product) {
+    public static function render_shop() {
+        $products = RubinMC_DB_Manager::get_donate_products();
+        $output = '<div class="rmc-shop-container">';
+        foreach($products as $p){
+            ob_start();
             include RMC_PATH . 'includes/shop-card-template.php';
+            $output .= ob_get_clean();
         }
-        echo '</div>';
-        return ob_get_clean();
+        $output .= '</div>';
+        return $output;
     }
 }

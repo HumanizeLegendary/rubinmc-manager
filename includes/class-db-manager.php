@@ -2,33 +2,14 @@
 if (!defined('ABSPATH')) exit;
 
 class RubinMC_DB_Manager {
+    public static $wpdb;
 
-    public static function get_products() {
+    public static function init() {
         global $wpdb;
-        return $wpdb->get_results("
-            SELECT * FROM {$wpdb->prefix}rmc_donate_products
-            WHERE active = 1
-            ORDER BY price ASC
-        ");
+        self::$wpdb = $wpdb;
     }
 
-    public static function get_product($id) {
-        global $wpdb;
-        return $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}rmc_donate_products WHERE id = %d",
-                $id
-            )
-        );
-    }
-
-    public static function get_server($id) {
-        global $wpdb;
-        return $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}rmc_servers WHERE server_id = %d",
-                $id
-            )
-        );
+    public static function get_donate_products() {
+        return self::$wpdb->get_results("SELECT * FROM rmc_donate_products WHERE active=1 ORDER BY donate_id ASC");
     }
 }

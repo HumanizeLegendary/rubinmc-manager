@@ -1,27 +1,39 @@
-jQuery(function ($) {
-
-    $('.buy-init').on('click', function () {
-        $(this).siblings('.overlay').fadeIn(200);
+jQuery(document).ready(function($){
+    $('.rmc-buy-button').click(function(){
+        var card = $(this).closest('.rmc-card');
+        var modal = $('.rmc-modal-overlay');
+        modal.find('.rmc-modal-title').text(card.find('.rmc-card-title').text());
+        modal.find('.rmc-modal-description').text(card.find('.rmc-card-description').text());
+        modal.fadeIn();
     });
 
-    $('.agree').on('change', function () {
-        $(this)
-            .closest('.confirm')
-            .find('.pay')
-            .prop('disabled', !this.checked);
+    $('.rmc-close-modal').click(function(){
+        var modal = $(this).closest('.rmc-modal-overlay');
+        modal.fadeOut();
+        modal.find('.rmc-player-nick').val('');
+        modal.find('.rmc-agree-checkbox').prop('checked', false);
     });
 
-    $('.pay').on('click', function () {
-        const card = $(this).closest('.product-card');
+    $('.rmc-confirm-buy-button').click(function(){
+        var modal = $(this).closest('.rmc-modal-overlay');
+        var player = modal.find('.rmc-player-nick').val();
+        var agree = modal.find('.rmc-agree-checkbox').is(':checked');
+        var title = modal.find('.rmc-modal-title').text();
 
-        $.post(RMC.ajax, {
-            action: 'rmc_buy',
-            product_id: card.data('id'),
-            player: RMC.player
-        }, function () {
-            alert('Покупка обработана');
-            $('.overlay').fadeOut(200);
+        if(!player){ alert('Введите ник!'); return; }
+        if(!agree){ alert('Примите правила!'); return; }
+
+        $.post(rmc_ajax.ajax_url, {
+            action: 'rmc_purchase',
+            donate_title: title,
+            player: player
+        }, function(resp){
+            alert(resp.message);
+            if(resp.success){
+                modal.fadeOut();
+                modal.find('.rmc-player-nick').val('');
+                modal.find('.rmc-agree-checkbox').prop('checked', false);
+            }
         });
     });
-
 });
